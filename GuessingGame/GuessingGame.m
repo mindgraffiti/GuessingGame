@@ -24,7 +24,7 @@
 - (void)startGame
 {
     self.canGuessAgain = YES;
-    self.maxChoices = self.maxChoices ? self.maxChoices : DEFAULT_MAX_CHOICES;
+    self.maxChoices = DEFAULT_MAX_CHOICES;
     self.answer = [self generateRandomAnswer];
     self.startTime = [NSDate date];
 }

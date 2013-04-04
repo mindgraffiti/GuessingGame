@@ -25,7 +25,7 @@
     self.game.maxWins = 3;
     [self.game startGame];
     
-    [self syncUI];
+    self.title = @"Guessing Game";
 }
 
 -(void)syncUI{
