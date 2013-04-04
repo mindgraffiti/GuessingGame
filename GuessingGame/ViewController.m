@@ -19,10 +19,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.game = [[GuessingGame alloc] initWithMaxChoices:[self.guessButtons count]];
+    self.game = [[GuessingGame alloc] init];
     self.game.wins = [[NSUserDefaults standardUserDefaults] integerForKey:@"wins"];
     self.game.maxTries = 4;
     self.game.maxWins = 3;
+    [self.game startGame];
+    
+    [self syncUI];
 }
 
 -(void)syncUI{
@@ -46,6 +49,12 @@
     Choice *choice = [self.game choiceAtIndex:[self.guessButtons indexOfObject:sender]];
     [self.game guess:choice];
     if(self.game.isWinner){
+        NSMutableArray *scores = (NSMutableArray *)[[NSUserDefaults standardUserDefaults] arrayForKey:@"scores"];
+        
+        // taking times, turning them into numbers, then adding them to the array of scores
+        [scores addObject:[NSNumber numberWithDouble:self.game.duration]];
+        [[NSUserDefaults standardUserDefaults] setValue:scores forKey:@"scores"];
+        
         [self showWinnerMessage];
     }else{
         if (!self.game.canGuessAgain) {

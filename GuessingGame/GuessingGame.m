@@ -7,9 +7,11 @@
 //
 
 #import "GuessingGame.h"
+#define DEFAULT_MAX_CHOICES 9
 
 @interface GuessingGame()
 @property (nonatomic, readwrite) NSInteger answer;
+@property (nonatomic, strong) NSDate *startTime;
 -(void)initializeChoicesWithAnswer:(NSInteger)answer;
 @end
 
@@ -19,7 +21,13 @@
     if(!_choices) _choices = [[NSMutableArray alloc] init];
     return _choices;
 }
-
+- (void)startGame
+{
+    self.canGuessAgain = YES;
+    self.maxChoices = self.maxChoices ? self.maxChoices : DEFAULT_MAX_CHOICES;
+    self.answer = [self generateRandomAnswer];
+    self.startTime = [NSDate date];
+}
 - (id)initWithMaxChoices:(NSInteger)maxChoices
 {
     self = [super init];
@@ -56,6 +64,7 @@
 -(void)guess:(Choice *)choice{
     self.tries++;
     if(choice.isAnswer){
+        self.duration = [[NSDate date] timeIntervalSinceDate:self.startTime];
         self.wins++;
         self.isWinner = YES;
     }else{
